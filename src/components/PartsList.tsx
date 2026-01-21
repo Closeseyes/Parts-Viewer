@@ -38,6 +38,10 @@ export const PartsList: React.FC<PartsListProps> = ({ adminMode = false }) => {
 
   const loadParts = async () => {
     try {
+      console.log('loadParts 호출, window.electron:', (window as any).electron);
+      if (!(window as any).electron) {
+        throw new Error('window.electron이 undefined입니다!');
+      }
       const data = await (window as any).electron.getParts();
       console.log('부품 데이터:', data);
       if (data && data.length > 0) {
@@ -46,6 +50,7 @@ export const PartsList: React.FC<PartsListProps> = ({ adminMode = false }) => {
       setParts(data);
     } catch (error) {
       console.error('부품 로드 오류:', error);
+      alert(`에러: ${error}`);
     } finally {
       setLoading(false);
     }

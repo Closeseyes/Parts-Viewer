@@ -1,6 +1,7 @@
 import { app, BrowserWindow, Menu, ipcMain } from 'electron';
 import * as path from 'path';
-import isDev from 'electron-is-dev';
+import * as fs from 'fs';
+import { pathToFileURL } from 'url';
 import { initDatabase } from './database.js';
 import { log } from './logger.js';
 
@@ -20,14 +21,36 @@ const createWindow = () => {
     },
   });
 
-  const startUrl = isDev
-    ? 'http://localhost:5173'
-    : `file://${path.join(__dirname, '../dist/index.html')}`;
+  // CSP 헤더 설정
+  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': ["default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"],
+      },
+    });
+  });
 
+  // NODE_ENV 환경 변수로 dev/prod 구분
+  const isDev = process.env.NODE_ENV === 'development' || process.argv.includes('--dev');
+  
+  let startUrl: string;
+  if (isDev) {
+    startUrl = 'http://localhost:5173';
+  } else {
+    // __dirname = dist-electron 폴더, 따라서 ../dist로 접근
+    const distPath = path.resolve(__dirname, '../dist/index.html');
+    log(`distPath resolved: ${distPath}`);
+    startUrl = pathToFileURL(distPath).toString();
+  }
+
+  log(`startUrl: ${startUrl} (isDev: ${isDev})`);
   mainWindow.loadURL(startUrl);
 
-  // 개발 모드에서도 디버그 창 자동 오픈 방지
-  // mainWindow.webContents.openDevTools();
+  // 개발 모드에서만 DevTools 표시
+  if (isDev) {
+    mainWindow.webContents.openDevTools();
+  }
 
   mainWindow.once('ready-to-show', () => {
     mainWindow?.center();
@@ -41,6 +64,22 @@ app.on('ready', () => {
   log('앱 시작: ready 이벤트 수신');
   initDatabase();
   createWindow();
+});
+
+// 렌더러 프로세스의 콘솔 로그 수신
+ipcMain.on('console-log', (event, level, ...args) => {
+  const message = args.map(arg => {
+    if (typeof arg === 'object') {
+      return JSON.stringify(arg);
+    }
+    return String(arg);
+  }).join(' ');
+  
+  if (level === 'error') {
+    log(`[RENDERER ERROR] ${message}`);
+  } else {
+    log(`[RENDERER] ${message}`);
+  }
 });
 
 app.on('window-all-closed', () => {

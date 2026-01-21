@@ -193,7 +193,7 @@ export const ImportParts: React.FC<ImportPartsProps> = ({ onImported }) => {
       const vendor = String(row[mapping.vendor] ?? '').trim()
       const priceRaw = row[mapping.price]
       const sapCode = mapping.sap_code ? String(row[mapping.sap_code] ?? '').trim() : ''
-      const categoryName = mapping.category ? String(row[mapping.category] ?? '').trim() : ''
+      // const categoryName = mapping.category ? String(row[mapping.category] ?? '').trim() : ''
 
       // 통화 감지 및 가격 파싱
       const { price_usd, price_krw } = detectCurrencyAndValue(priceRaw)

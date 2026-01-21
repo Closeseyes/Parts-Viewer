@@ -4,6 +4,8 @@
   "version": "0.1.0",
   "type": "commonjs",
   "main": "dist-electron/main.js",
+  "description": "Parts Viewer desktop app for managing parts with history, Excel export, and statistics",
+  "author": "Closeseyes",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -11,7 +13,7 @@
     "preview": "vite preview",
     "tsc:electron": "tsc -p tsconfig.electron.json",
     "electron": "npm run tsc:electron && node ./node_modules/electron/cli.js dist-electron/main.js",
-    "electron-dev": "concurrently \"vite --port 5173\" \"wait-on http://localhost:5173 && npm run tsc:electron && node ./node_modules/electron/cli.js dist-electron/main.js\"",
+    "electron-dev": "concurrently \"vite --port 5173\" \"wait-on http://localhost:5173 && npm run tsc:electron && node ./node_modules/electron/cli.js dist-electron/main.js --dev\"",
     "electron-build": "npm run build && npm run tsc:electron && electron-builder"
   },
   "dependencies": {
@@ -49,5 +51,22 @@
   },
   "overrides": {
     "vite": "npm:rolldown-vite@7.2.5"
+  },
+  "build": {
+    "appId": "com.closeseyes.partsviewer",
+    "productName": "Parts Viewer",
+    "directories": {
+      "output": "out-package"
+    },
+    "asar": false,
+    "files": [
+      "dist/**",
+      "dist-electron/**",
+      "package.json",
+      "!dist/win-unpacked/**"
+    ],
+    "win": {
+      "target": "nsis"
+    }
   }
 }

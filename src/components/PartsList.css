@@ -1,0 +1,113 @@
+.parts-list {
+  padding: 20px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.parts-list h2 {
+  margin-bottom: 20px;
+}
+
+/* 검색 바 스타일 */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background: white;
+  color: #2c3e50;
+  pointer-events: auto;
+  position: relative;
+  z-index: 10;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+.search-info {
+  padding: 8px 0;
+  color: #666;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+
+/* 선택 바 스타일 */
+.selection-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #f0f8ff;
+  border: 1px solid #3498db;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.selection-info {
+  font-size: 14px;
+  color: #2c3e50;
+  font-weight: 500;
+  flex: 1;
+}
+
+.parts-list table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+}
+
+.parts-list tbody tr.selected-row {
+  background-color: #e3f2fd;
+}
+
+.parts-list tbody tr.selected-row:hover {
+  background-color: #bbdefb;
+}
+
+.parts-list th,
+.parts-list td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.parts-list th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.parts-list button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.parts-list .btn { margin-right: 6px; }
+.parts-list .btn.search { background: #3498db; color: #fff; }
+.parts-list .btn.search:hover { background: #2d83bc; }
+.parts-list .btn.clear { background: #95a5a6; color: #fff; }
+.parts-list .btn.clear:hover { background: #7f8c8d; }
+.parts-list .btn.export { background: #27ae60; color: #fff; }
+.parts-list .btn.export:hover { background: #229954; }
+.parts-list .btn.edit { background: #3498db; color: #fff; }
+.parts-list .btn.edit:hover { background: #2d83bc; }
+.parts-list .btn.save { background: #2ecc71; color: #fff; }
+.parts-list .btn.save:hover { background: #26b863; }
+.parts-list .btn.cancel { background: #95a5a6; color: #fff; }
+.parts-list .btn.cancel:hover { background: #7f8c8d; }
+.parts-list .btn.delete { background: #e74c3c; color: #fff; }
+.parts-list .btn.delete:hover { background: #c44134; }
+.parts-list .actions { white-space: nowrap; }
+.parts-list .muted { color: #888; }
